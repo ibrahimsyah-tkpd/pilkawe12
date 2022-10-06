@@ -2,8 +2,6 @@ services:
   app:
     build: .
     container_name: pilkawe12_app
-    environment:
-      - DSN=postgresql://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_NAME}
     ports:
       - 80:3000
     networks:
