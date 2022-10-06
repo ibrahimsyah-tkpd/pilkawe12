@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         <div className={styles.inputBox}>
           <h1>Mulai Memilih</h1>
           <h4>Masukkan Nomor Induk Kependudukan Anda untuk Memulai</h4>
-          <input type="text" placeholder='NIK / Nomor KTP'/>
+          <input type="number" placeholder='NIK / Nomor KTP'/>
           <button onClick={handleClick}>Periksa data</button>
         </div>
       </section>
