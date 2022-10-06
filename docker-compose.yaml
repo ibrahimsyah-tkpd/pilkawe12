@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    container_name: pilkawe12_app
+    environment:
+      - DSN=postgresql://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_NAME}
+    ports:
+      - 80:3000
+    networks:
+      - server_network
+    volumes:
+      - server_storage:/app/media
+  db:
+    image: 'postgres:latest'
+    container_name: 'pilkawe12-database'
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    expose:
+      - 5432
+    ports:
+      - ${DB_OPEN_PORT}:5432
+    networks: 
+      - server_network
+    volumes:
+      - db_storage:/var/lib/postgresql/data
+networks:
+  server_network:
+volumes:
+  db_storage:
+    driver: local
+  server_storage:
+    driver: local
