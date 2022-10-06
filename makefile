@@ -1,12 +1,12 @@
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 restart:
-	docker-compose down --remove-orphans
-	docker-compose up --build -d
+	docker compose down --remove-orphans
+	docker compose up --build -d
