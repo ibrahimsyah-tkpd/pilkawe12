@@ -1,10 +1,9 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/home.module.scss'
 
-const Home: NextPage = () => {
-  const handleClick = (): void =>  {
+const Home = () => {
+  const handleClick = () =>  {
     console.log("Masuk pakk")
   }
 

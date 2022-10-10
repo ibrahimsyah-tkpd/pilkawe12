@@ -1,0 +1,66 @@
+$dark-blue: #63a4ff;
+
+#main {
+  background-color: rgb(255, 255, 255);
+  padding: 1em;
+}
+
+#navbar {
+  text-align: center;
+  background: $dark-blue;
+  padding: 1em 0;
+  color: white;
+  h1 {
+    font-size: unset;
+    margin: 0;
+  }
+}
+
+.resultContainer {
+  display: grid;
+  gap: 1em;
+
+  @media screen and (min-width: 720px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.controlPanel {
+  margin-top: 1.5em;
+  display: grid;
+  gap: 1em;
+
+  @media screen and (min-width: 720px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.box {
+  padding: 1em;
+  background-color: white;
+  border-radius: 0.5em;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding: 0px 0px 0.5em 0px;
+    p {
+      margin: 0;
+    }
+    button {
+      border: none;
+      background-color: $dark-blue;
+      color: white;
+      padding: 0.5em;
+      border-radius: 0.5em;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
