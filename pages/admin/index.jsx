@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
+import { toastConfig } from "../../lib/helper/toast";
 import Modal from "../../components/modal";
 import {
   MODAL_TYPE_ADMIN,
@@ -14,22 +16,28 @@ import api from "../../lib/helper/api";
 const AdminPage = () => {
   const { isAuthenticated } = useAdmin();
   const [showedModalType, setShowedModalType] = useState("");
-  const [adminList, setAdminList] = useState([])
+  const [adminList, setAdminList] = useState([]);
 
-  const onFormSubmit = (formData) => {
-    console.log(formData);
+  const onFormSubmit = async (formData, modalType) => {
+    if (modalType === MODAL_TYPE_ADMIN) {
+      try {
+        await api.post("/admin", formData);
+        setShowedModalType("");
+        populateAdminList();
+        toast.success("Berhasil Menambah Admin", toastConfig)
+      } catch (err) {
+        toast.error(err.response.data.error, toastConfig);
+      }
+    }
+  };
+
+  const populateAdminList = async () => {
+    const { data } = await api.get("/admin");
+    setAdminList(data);
   };
 
   useEffect(() => {
-    const fetchAdminList = async () => {
-      const { data } = await api.get("/admin");
-      return data
-    };
-
-    Promise.all([fetchAdminList()]).then(res => {
-      const [adminList] = res
-      setAdminList(adminList)
-    })
+    populateAdminList();
   }, []);
 
   useEffect(() => {
@@ -43,6 +51,7 @@ const AdminPage = () => {
       <Head>
         <title>Admin Panel</title>
       </Head>
+      <ToastContainer />
       <>
         <nav id={styles.navbar}>
           <h1>Admin Panel</h1>
@@ -83,7 +92,9 @@ const AdminPage = () => {
                   Tambah
                 </button>
               </div>
-              {adminList.map(admin => <p key={admin.id}>{admin.name}</p>)}
+              {adminList.map((admin) => (
+                <p key={admin.id}>{admin.name}</p>
+              ))}
             </div>
           </div>
         </section>

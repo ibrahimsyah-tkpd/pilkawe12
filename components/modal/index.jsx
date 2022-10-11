@@ -40,7 +40,7 @@ const Modal = ({ type, onClose, onSubmit }) => {
       }
     }
 
-    onSubmit(formData)
+    onSubmit(formData, type)
   }
 
   const onImageChange = e => {
