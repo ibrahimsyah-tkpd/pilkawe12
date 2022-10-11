@@ -1,6 +1,12 @@
-const MODAL_TYPE_CANDIDATE= "CANDIDATE";
+const MODAL_TYPE_CANDIDATE = "CANDIDATE";
 const MODAL_TYPE_VOTER = "VOTER";
 const MODAL_TYPE_ADMIN = "ADMIN";
+
+const formStringMap = {
+  text: true,
+  number: true,
+  password: true
+};
 
 const formConfigMap = {
   [MODAL_TYPE_CANDIDATE]: {
@@ -14,7 +20,7 @@ const formConfigMap = {
       {
         id: "rt",
         label: "RT",
-        type: "text",
+        type: "number",
       },
       {
         id: "photo",
@@ -41,7 +47,7 @@ const formConfigMap = {
         label: "Password",
         type: "password",
       },
-    ]
+    ],
   },
   [MODAL_TYPE_VOTER]: {
     title: "Tambah Pemilih",
@@ -54,25 +60,21 @@ const formConfigMap = {
       {
         id: "nik",
         label: "NIK",
-        type: "text",
+        type: "number",
       },
       {
         id: "rt",
         label: "RT",
-        type: "text",
-      },
-      {
-        id: "rw",
-        label: "RW",
-        type: "text",
+        type: "number",
       },
     ],
   },
 };
 
-export { 
+export {
+  formStringMap,
   formConfigMap,
   MODAL_TYPE_ADMIN,
   MODAL_TYPE_CANDIDATE,
-  MODAL_TYPE_VOTER
+  MODAL_TYPE_VOTER,
 };

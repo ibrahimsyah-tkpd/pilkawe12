@@ -1,6 +1,6 @@
 import styles from "./modal.module.scss";
 import { useMemo, useRef, useState } from "react";
-import { formConfigMap } from "./config";
+import { formConfigMap, formStringMap } from "./config";
 import Image from "next/image";
 
 const Modal = ({ type, onClose }) => {
@@ -27,7 +27,7 @@ const Modal = ({ type, onClose }) => {
     for (let i = 0; i < formConfig.fields.length; i++){
       const formField = formConfig.fields[i]
       const field = formRef.current[i]
-      if (field.type === "text"){
+      if (formStringMap[field.type]){
         if (field.value === ""){
           alert("Data Belum Lengkap.")
           continue
@@ -50,7 +50,7 @@ const Modal = ({ type, onClose }) => {
   }
 
   const onImageChange = e => {
-    if (e.target.type == "text") return
+    if (formStringMap[e.target.type]) return
     
     const file = e.target.files[0]
     if(file.size >= 200*1000){ // 200 KB
@@ -66,12 +66,10 @@ const Modal = ({ type, onClose }) => {
       <div className={styles.modal}>
         <div className={styles.container}>
           <p className={styles.title}>{formConfig.title}</p>
-          <form className={styles.form} ref={formRef}>
+          <form className={styles.form} ref={formRef} autoComplete="off" autoCorrect="off">
             {formConfig.fields.map((field, index) => (
               <div key={index} className={styles.field}>
                 <input
-                  autoComplete="false"
-                  autoCorrect="false"
                   id={index}
                   type={field.type}
                   onChange={onImageChange}
