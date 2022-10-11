@@ -40,12 +40,11 @@ const AdminPage = () => {
     populateAdminList();
   }, []);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      window.location = "/admin/login";
-    }
-  }, [isAuthenticated]);
-
+  if (!isAuthenticated) {
+    window.location = "/admin/login";
+    return
+  }
+    
   return (
     <>
       <Head>
