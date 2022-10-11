@@ -2,6 +2,7 @@ import styles from "./modal.module.scss";
 import { useMemo, useRef, useState } from "react";
 import { formConfigMap, formStringMap } from "./config";
 import Image from "next/image";
+import api from "../../lib/helper/api";
 
 const Modal = ({ type, onClose }) => {
   const formRef = useRef()
@@ -11,13 +12,7 @@ const Modal = ({ type, onClose }) => {
   const uploadFile = async (file) => {
     const formData = new FormData()
     formData.append("file", file)
-
-    const response = await fetch("/api/upp", {
-      body: formData,
-      method: "post"
-    })
-
-    return await response.json()
+    return api.post('/upp', formData)
   }
 
   const onFormSubmit = async () => {
@@ -45,8 +40,6 @@ const Modal = ({ type, onClose }) => {
         formData[formField.id] = fileURL
       }
     }
-
-    console.log(formData)
   }
 
   const onImageChange = e => {

@@ -1,59 +1,91 @@
-import {useState } from 'react'
-import Modal from '../../components/modal'
-import { MODAL_TYPE_ADMIN, MODAL_TYPE_CANDIDATE, MODAL_TYPE_VOTER } from '../../components/modal/config'
-import styles from '../../styles/admin.module.scss'
+import Head from "next/head";
+import { useEffect, useState } from "react";
+
+import Modal from "../../components/modal";
+import {
+  MODAL_TYPE_ADMIN,
+  MODAL_TYPE_CANDIDATE,
+  MODAL_TYPE_VOTER,
+} from "../../components/modal/config";
+import styles from "../../styles/admin.module.scss";
+import { useAdmin } from "../../lib/context/admin";
 
 const AdminPage = () => {
-    const [showedModalType, setShowedModalType] = useState("")
-    
-    const onFormSubmit = () => {
+  const { isAuthenticated, admin, loading } = useAdmin();
+  const [showedModalType, setShowedModalType] = useState("");
 
+  const onFormSubmit = () => {};
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated){
+      window.location = '/admin/login'
     }
+  }, [isAuthenticated, loading]);
 
-    return (
-        <>
-            <>
-                <nav id={styles.navbar}>
-                    <h1>Admin Panel</h1>
-                </nav>
-                <section id={styles.main}>
-                    <div className={styles.resultContainer}>
-                        <div className={styles.box}>
-                            <p className={styles.title}>
-                                Hasil Pengambilan Suara
-                            </p>
-                        </div>
-                        <div className={styles.box}>
-                            <p className={styles.title}>Rincian Pemilih</p>
-                        </div>
-                    </div>
+  if (loading) {
+    return <p>Loading... 🙏🏻</p>
+  }
 
-                    <div className={styles.controlPanel}>
-                        <div className={styles.box}>
-                            <div className={styles.header}>
-                                <p className={styles.title}>Daftar Kandidat</p>
-                                <button onClick={() => setShowedModalType(MODAL_TYPE_CANDIDATE)}>Tambah</button>
-                            </div>
-                        </div>
-                        <div className={styles.box}>
-                            <div className={styles.header}>
-                                <p className={styles.title}>Daftar Pemilih</p>
-                                <button onClick={() => setShowedModalType(MODAL_TYPE_VOTER)} >Tambah</button>
-                            </div>
-                        </div>
-                        <div className={styles.box}>
-                            <div className={styles.header}>
-                                <p className={styles.title}>Daftar Admin</p>
-                                <button onClick={() => setShowedModalType(MODAL_TYPE_ADMIN)}>Tambah</button>
-                            </div>
-                        </div>
-                    </div >
-                </section >
-            </>
+  return (
+    <>
+      <Head>
+        <title>Admin Panel</title>
+      </Head>
+      <>
+        {loading}
+        <nav id={styles.navbar}>
+          <h1>Admin Panel</h1>
+        </nav>
+        <section id={styles.main}>
+          <div className={styles.resultContainer}>
+            <div className={styles.box}>
+              <p className={styles.title}>Hasil Pengambilan Suara</p>
+            </div>
+            <div className={styles.box}>
+              <p className={styles.title}>Rincian Pemilih</p>
+            </div>
+          </div>
 
-            {!!showedModalType && <Modal onSubmit={onFormSubmit} onClose={() => setShowedModalType("")} type={showedModalType} />}
-        </>
-    )
-}
+          <div className={styles.controlPanel}>
+            <div className={styles.box}>
+              <div className={styles.header}>
+                <p className={styles.title}>Daftar Kandidat</p>
+                <button
+                  onClick={() => setShowedModalType(MODAL_TYPE_CANDIDATE)}
+                >
+                  Tambah
+                </button>
+              </div>
+            </div>
+            <div className={styles.box}>
+              <div className={styles.header}>
+                <p className={styles.title}>Daftar Pemilih</p>
+                <button onClick={() => setShowedModalType(MODAL_TYPE_VOTER)}>
+                  Tambah
+                </button>
+              </div>
+            </div>
+            <div className={styles.box}>
+              <div className={styles.header}>
+                <p className={styles.title}>Daftar Admin</p>
+                <button onClick={() => setShowedModalType(MODAL_TYPE_ADMIN)}>
+                  Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
 
-export default AdminPage
+      {!!showedModalType && (
+        <Modal
+          onSubmit={onFormSubmit}
+          onClose={() => setShowedModalType("")}
+          type={showedModalType}
+        />
+      )}
+    </>
+  );
+};
+
+export default AdminPage;
