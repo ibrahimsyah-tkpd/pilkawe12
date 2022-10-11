@@ -3,8 +3,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { AdminProvider, useAdmin } from "../lib/context/admin";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAdmin();
-  if (loading || !isAuthenticated) {
+  const {loading } = useAdmin();
+  if (loading) {
     return <p>Loading... 🙏🏻</p>;
   }
   return children;
