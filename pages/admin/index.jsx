@@ -9,22 +9,34 @@ import {
 } from "../../components/modal/config";
 import styles from "../../styles/admin.module.scss";
 import { useAdmin } from "../../lib/context/admin";
+import api from "../../lib/helper/api";
 
 const AdminPage = () => {
-  const { isAuthenticated, admin, loading } = useAdmin();
+  const { isAuthenticated } = useAdmin();
   const [showedModalType, setShowedModalType] = useState("");
+  const [adminList, setAdminList] = useState([])
 
-  const onFormSubmit = () => {};
+  const onFormSubmit = (formData) => {
+    console.log(formData);
+  };
 
   useEffect(() => {
-    if (!loading && !isAuthenticated){
-      window.location = '/admin/login'
-    }
-  }, [isAuthenticated, loading]);
+    const fetchAdminList = async () => {
+      const { data } = await api.get("/admin");
+      return data
+    };
 
-  if (loading) {
-    return <p>Loading... 🙏🏻</p>
-  }
+    Promise.all([fetchAdminList()]).then(res => {
+      const [adminList] = res
+      setAdminList(adminList)
+    })
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      window.location = "/admin/login";
+    }
+  }, [isAuthenticated]);
 
   return (
     <>
@@ -32,7 +44,6 @@ const AdminPage = () => {
         <title>Admin Panel</title>
       </Head>
       <>
-        {loading}
         <nav id={styles.navbar}>
           <h1>Admin Panel</h1>
         </nav>
@@ -72,6 +83,7 @@ const AdminPage = () => {
                   Tambah
                 </button>
               </div>
+              {adminList.map(admin => <p key={admin.id}>{admin.name}</p>)}
             </div>
           </div>
         </section>

@@ -4,7 +4,7 @@ import { formConfigMap, formStringMap } from "./config";
 import Image from "next/image";
 import api from "../../lib/helper/api";
 
-const Modal = ({ type, onClose }) => {
+const Modal = ({ type, onClose, onSubmit }) => {
   const formRef = useRef()
   const formConfig = useMemo(() => formConfigMap[type], [type]);
   const [imagePreview, setImagePreview] = useState("/img/profile_placeholder.png")
@@ -35,11 +35,12 @@ const Modal = ({ type, onClose }) => {
       // upload file if exists
       if (field.value){
         const file = field.files[0]
-        const {file: fileURL } = await uploadFile(file)
-       
-        formData[formField.id] = fileURL
+        const {data} = await uploadFile(file)
+        formData[formField.id] = data.file
       }
     }
+
+    onSubmit(formData)
   }
 
   const onImageChange = e => {

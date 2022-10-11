@@ -17,7 +17,7 @@ route.get(async (req, res) => {
     query: { id },
   } = req;
 
-  const query = db("mst_admin");
+  const query = db("mst_admin").orderBy('id');
   if (id) {
     query.where({ id }).first();
   }
