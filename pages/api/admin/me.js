@@ -9,12 +9,16 @@ const route = nextConnect({
 });
 
 route.use(middleware.tokenMiddleware, middleware.adminMiddleware);
-route.get(async(req, res) => {
-    const {payload: {id}} = req
-    const user = await db("mst_admin").select("id", "name", "username").where({id}).first()
+route.get(async (req, res) => {
+  const {
+    payload: { id },
+  } = req;
+  const user = await db("mst_admin")
+    .select("id", "name", "username")
+    .where({ id })
+    .first();
 
-    return res.json(user)
-})
+  return res.json(user);
+});
 
-
-export default route
+export default route;

@@ -17,6 +17,8 @@ const AdminPage = () => {
   const { isAuthenticated } = useAdmin();
   const [showedModalType, setShowedModalType] = useState("");
   const [adminList, setAdminList] = useState([]);
+  const [candidateList, setCandidateList] = useState([])
+  const [voterList, setVoterList] = useState([])
 
   const onFormSubmit = async (formData, modalType) => {
     if (modalType === MODAL_TYPE_ADMIN) {
@@ -29,6 +31,28 @@ const AdminPage = () => {
         toast.error(err.response.data.error, toastConfig);
       }
     }
+
+    if (modalType === MODAL_TYPE_VOTER) {
+      try {
+        await api.post("/voter", formData);
+        setShowedModalType("");
+        populateVoterList();
+        toast.success("Berhasil Menambah Pemilih", toastConfig)
+      } catch (err) {
+        toast.error(err.response.data.error, toastConfig);
+      }
+    }
+
+    if (modalType === MODAL_TYPE_CANDIDATE) {
+      try {
+        await api.post("/candidate", formData);
+        setShowedModalType("");
+        populateCandidateList();
+        toast.success("Berhasil Menambah Kandidat", toastConfig)
+      } catch (err) {
+        toast.error(err.response.data.error, toastConfig);
+      }
+    }
   };
 
   const populateAdminList = async () => {
@@ -36,8 +60,19 @@ const AdminPage = () => {
     setAdminList(data);
   };
 
+  const populateVoterList = async () => {
+    const { data } = await api.get('/voter')
+    setVoterList(data)
+  }
+
+  const populateCandidateList = async () => {
+    const {data} = await api.get("/candidate")
+    setCandidateList(data)
+  }
+
   useEffect(() => {
     populateAdminList();
+    populateVoterList()
   }, []);
 
   if (!isAuthenticated) {
@@ -75,6 +110,9 @@ const AdminPage = () => {
                   Tambah
                 </button>
               </div>
+              {candidateList.map((candidate) => (
+                <p key={candidate.id}>{candidate.name}</p>
+              ))}
             </div>
             <div className={styles.box}>
               <div className={styles.header}>
@@ -83,6 +121,9 @@ const AdminPage = () => {
                   Tambah
                 </button>
               </div>
+              {voterList.map((voter) => (
+                <p key={voter.id}>{voter.name}</p>
+              ))}
             </div>
             <div className={styles.box}>
               <div className={styles.header}>
