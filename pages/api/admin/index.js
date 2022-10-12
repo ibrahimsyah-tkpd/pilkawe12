@@ -17,7 +17,7 @@ route.get(async (req, res) => {
     query: { id },
   } = req;
 
-  const query = db("mst_admin").orderBy('id');
+  const query = db("mst_admin").orderBy("name");
   if (id) {
     query.where({ id }).first();
   }
@@ -27,7 +27,10 @@ route.get(async (req, res) => {
 });
 
 route.post(async (req, res) => {
-  const { name, username, password } = req.body;
+  const {
+    body: { name, username, password },
+    payload: { id },
+  } = req;
   if (validator.isFieldsEmpty(name, username, password)) {
     return res.status(400).json({ error: "data belum lengkap." });
   }
@@ -38,7 +41,7 @@ route.post(async (req, res) => {
       name,
       username,
       password: hashedPassword,
-      created_by: 1,
+      created_by: id,
     });
     res.status(201).json({ success: true });
   } catch (err) {
